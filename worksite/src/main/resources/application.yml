@@ -23,22 +23,21 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME:worksitesena@gmail.com}
-    password: ${MAIL_PASSWORD:ugrrovugoqrzcddw}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+  mvc:
+    favicon:
+      enabled: false
 
 worksite:
   admin:
-    codigo: worksiteADMIN.2026
+    codigo: ${WORKSITE_ADMIN_CODIGO}
 
 server:
-  port: 8080
-  spring:
-    mvc:
-      favicon:
-        enabled: false
+  port: ${PORT:3306}

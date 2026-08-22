@@ -35,21 +35,28 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers(HttpMethod.POST, "/ResgistroUsuario").permitAll()
-                .requestMatchers(HttpMethod.POST, "/ResgistroUsuario/login").permitAll()
+                        // Recursos estáticos del frontend: html, css, js, imágenes, favicon
+                        .requestMatchers(HttpMethod.GET,
+                                "/", "/*.html", "/**/*.html",
+                                "/css/**", "/js/**", "/img/**", "/images/**",
+                                "/favicon.ico", "/*.png", "/*.jpg", "/*.svg", "/*.ico"
+                        ).permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/ResgistroUsuario").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/ResgistroUsuario/login").permitAll()
 
 
-                .requestMatchers(HttpMethod.GET, "/oferta/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/oferta/**").permitAll()
 
-                // Todo lo demás requiere un token válido
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                        // Todo lo demás requiere un token válido
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
