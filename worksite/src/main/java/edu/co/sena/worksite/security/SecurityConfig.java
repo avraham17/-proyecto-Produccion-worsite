@@ -40,11 +40,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        // Recursos estáticos del frontend: html, css, js, imágenes, favicon
+                        // Recursos estáticos del frontend: html, css, js, imágenes, fuentes, favicon
                         .requestMatchers(HttpMethod.GET,
                                 "/", "/*.html", "/**/*.html",
-                                "/css/**", "/js/**", "/img/**", "/images/**",
-                                "/favicon.ico", "/*.png", "/*.jpg", "/*.svg", "/*.ico"
+                                "/css/**", "/js/**", "/img/**", "/images/**", "/assets/**", "/fonts/**",
+                                "/favicon.ico", "/*.png", "/*.jpg", "/*.jpeg", "/*.gif", "/*.webp", "/*.svg", "/*.ico"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/ResgistroUsuario").permitAll()
