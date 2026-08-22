@@ -41,9 +41,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // Recursos estáticos del frontend: html, css, js, imágenes, fuentes, favicon
+                        // (se incluyen variantes con mayúscula porque el proyecto mezcla "js/" y "Js/")
                         .requestMatchers(HttpMethod.GET,
                                 "/", "/*.html", "/**/*.html",
-                                "/css/**", "/js/**", "/img/**", "/images/**", "/assets/**", "/fonts/**",
+                                "/css/**", "/Css/**",
+                                "/js/**", "/Js/**",
+                                "/img/**", "/Img/**",
+                                "/images/**", "/Images/**",
+                                "/assets/**", "/Assets/**",
+                                "/fonts/**", "/Fonts/**",
                                 "/favicon.ico", "/*.png", "/*.jpg", "/*.jpeg", "/*.gif", "/*.webp", "/*.svg", "/*.ico"
                         ).permitAll()
 
