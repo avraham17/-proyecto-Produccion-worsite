@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EstadisticasService {
+public class    EstadisticasService {
 
     @Autowired
     private ResgistroUsuarioRepository usuarioRepository;
