@@ -21,7 +21,7 @@ function cargarUsuario(response) {
 }
 
 function cargarNombreEmpresaYRedirigir(idUsuario) {
-    callApi("http://localhost:8080/empresa/usuario/" + idUsuario, "GET", null, function (response) {
+    callApi(API_BASE_URL + "/empresa/usuario/" + idUsuario, "GET", null, function (response) {
         var miEmpresa = response.data;
 
         if (miEmpresa) {
@@ -51,6 +51,6 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     };
 
     callApi(
-        "http://localhost:8080/ResgistroUsuario/login", "POST", body, cargarUsuario, cbError
+        API_BASE_URL + "/ResgistroUsuario/login", "POST", body, cargarUsuario, cbError
     );
 });

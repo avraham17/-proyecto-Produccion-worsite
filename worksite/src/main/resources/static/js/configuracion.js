@@ -2,7 +2,7 @@
     function updateData(idUsuario, contrasenia) {
 
     callApi(
-            "http://localhost:8080/ResgistroUsuario/" + idUsuario + "/contrasenia",
+            API_BASE_URL + "/ResgistroUsuario/" + idUsuario + "/contrasenia",
             "PUT",
             contrasenia,
             actualizarContrasenia,
@@ -43,7 +43,7 @@
             }
 
             callApi(
-                "http://localhost:8080/ResgistroUsuario/" + idUsuario,
+                API_BASE_URL + "/ResgistroUsuario/" + idUsuario,
                 "GET", null,
                
                 function (response) {

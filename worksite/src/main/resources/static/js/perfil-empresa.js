@@ -12,7 +12,7 @@ function loadData() {
     var idUsuario = localStorage.getItem("idUsuario");
     var rol = localStorage.getItem("rol");
 
-    callApi("http://localhost:8080/empresa/usuario/" + idUsuario, "GET", null, function (response) {
+    callApi(API_BASE_URL + "/empresa/usuario/" + idUsuario, "GET", null, function (response) {
         cargarPerfil({ data: response.data });
     }, function (error) {
         console.log("No se encontró un perfil empresarial asociado a tu cuenta:", error);
@@ -57,11 +57,11 @@ function updateData(datos) {
         alert("Aún no se ha cargado tu perfil empresarial");
         return;
     }
-    callApi("http://localhost:8080/empresa/" + empresaId, "PUT", datos, actualizarPerfil, cbError);
+    callApi(API_BASE_URL + "/empresa/" + empresaId, "PUT", datos, actualizarPerfil, cbError);
 }
 
 function deleteData(correo) {
-    callApi("http://localhost:8080/empresa/correo/" + correo, "DELETE", null, eliminarPerfil, cbError);
+    callApi(API_BASE_URL + "/empresa/correo/" + correo, "DELETE", null, eliminarPerfil, cbError);
 }
 
 function cargarPerfil(response) {
@@ -104,7 +104,7 @@ function eliminarPerfil(response) {
 }
 
 function cargarOfertasEmpresa() {
-    callApi("http://localhost:8080/oferta/empresa/" + empresaId, "GET", null, function (response) {
+    callApi(API_BASE_URL + "/oferta/empresa/" + empresaId, "GET", null, function (response) {
         var misOfertas = response.data || [];
 
         
@@ -195,7 +195,7 @@ function renderOfertas(misOfertas) {
         contenedor.append(card);
 
         // Trae el conteo real de postulantes para esta oferta específica
-        callApi("http://localhost:8080/postulacion/oferta/" + o.id, "GET", null, function (resp) {
+        callApi(API_BASE_URL + "/postulacion/oferta/" + o.id, "GET", null, function (resp) {
             var cantidad = (resp.data || []).length;
             totalPostulantesGlobal += cantidad;
 
@@ -241,7 +241,7 @@ function toggleEstadoOferta(o, nuevoEstado) {
         "estado": nuevoEstado
     };
 
-    callApi("http://localhost:8080/oferta/" + o.id, "PUT", datosActualizados, function () {
+    callApi(API_BASE_URL + "/oferta/" + o.id, "PUT", datosActualizados, function () {
         cargarOfertasEmpresa();
     }, cbError);
 }
@@ -255,7 +255,7 @@ function mostrarPostulantes(idOferta, tituloOferta) {
     var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPostulantes'));
     modal.show();
 
-    callApi("http://localhost:8080/postulacion/oferta/" + idOferta, "GET", null, function (response) {
+    callApi(API_BASE_URL + "/postulacion/oferta/" + idOferta, "GET", null, function (response) {
         var postulantes = response.data || [];
 
         var contenedor = $("#listaPostulantes");
@@ -306,7 +306,7 @@ function mostrarPostulantes(idOferta, tituloOferta) {
             contenedor.append(fila);
 
             // Trae el perfil completo del candidato para mostrar sus datos extra
-            callApi("http://localhost:8080/ResgistroUsuario/" + p.idCandidato, "GET", null, function (resp) {
+            callApi(API_BASE_URL + "/ResgistroUsuario/" + p.idCandidato, "GET", null, function (resp) {
                 var c = resp.data;
                 avatar.text((c.nombres || "?").trim().charAt(0).toUpperCase());
 
@@ -353,7 +353,7 @@ function cambiarEstadoPostulacion(p, nuevoEstado, idOferta, tituloOferta) {
         "estadoPostulacion": nuevoEstado
     };
 
-    callApi("http://localhost:8080/postulacion/" + p.idPostulacion, "PUT", datosActualizados, function () {
+    callApi(API_BASE_URL + "/postulacion/" + p.idPostulacion, "PUT", datosActualizados, function () {
         mostrarPostulantes(idOferta, tituloOferta);
     }, cbError);
 }
@@ -397,7 +397,7 @@ $(function () {
             return;
         }
 
-        callApi("http://localhost:8080/empresa/" + empresaId, "PUT", datosActualizados, function (response) {
+        callApi(API_BASE_URL + "/empresa/" + empresaId, "PUT", datosActualizados, function (response) {
             actualizarPerfil(response);
 
             var modal = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
@@ -433,7 +433,7 @@ function guardarFotoAutomatico(fotoBase64) {
     }
 
     callApi(
-        "http://localhost:8080/empresa/" + empresaId + "/foto", "PUT",
+        API_BASE_URL + "/empresa/" + empresaId + "/foto", "PUT",
         { "foto": fotoBase64 },
         function () {
             fotoBase64Nueva = null;

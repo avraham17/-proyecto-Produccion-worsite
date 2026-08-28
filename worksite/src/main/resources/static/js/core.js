@@ -1,3 +1,12 @@
+// ============================================================
+// CONFIGURACIÓN DEL API
+// Este es el ÚNICO lugar donde debes cambiar la URL del backend.
+// - En desarrollo local: "http://localhost:8080"
+// - En producción (Railway, etc.): la URL pública de tu backend
+//   Ejemplo: "https://worksite-backend.up.railway.app"
+// ============================================================
+var API_BASE_URL = "http://localhost:8080";
+
 var validMethods = ["GET", "POST", "PUT", "DELETE"];
 
 

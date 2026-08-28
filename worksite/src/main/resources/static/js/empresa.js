@@ -29,7 +29,7 @@ $("#botonRegistrarse").click(onClickButton);
 }
 
 function saveData (data) {
-var base_url = "http://localhost:8080/empresa";
+var base_url = API_BASE_URL + "/empresa";
 var method = "POST";
 callApi (base_url, method, data, cbSuccess, cbError);
 

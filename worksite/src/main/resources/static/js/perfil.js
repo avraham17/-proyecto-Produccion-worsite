@@ -10,20 +10,20 @@ var fotoBase64Nueva = null; // guarda la foto recién seleccionada (en base64) h
     function loadData(idUsuario){
 
         callApi(
-        "http://localhost:8080/ResgistroUsuario/" + idUsuario,"GET",null,cargarPerfil,cbError
+        API_BASE_URL + "/ResgistroUsuario/" + idUsuario,"GET",null,cargarPerfil,cbError
         );
     }
 
     function updateData(idUsuario, datos){
 
         callApi(
-        "http://localhost:8080/ResgistroUsuario/" + idUsuario,"PUT",datos,actualizarPerfil,cbError
+        API_BASE_URL + "/ResgistroUsuario/" + idUsuario,"PUT",datos,actualizarPerfil,cbError
         );
     }
 
     function deleteData(correo){
         callApi(
-            "http://localhost:8080/ResgistroUsuario/correo/" + correo, "DELETE", null, eliminarPerfil, cbError
+            API_BASE_URL + "/ResgistroUsuario/correo/" + correo, "DELETE", null, eliminarPerfil, cbError
         );
     }
 
@@ -164,7 +164,7 @@ function cargarPostulaciones() {
     var idUsuario = localStorage.getItem("idUsuario");
 
     callApi(
-        "http://localhost:8080/postulacion/candidato/" + idUsuario, "GET", null,
+        API_BASE_URL + "/postulacion/candidato/" + idUsuario, "GET", null,
         mostrarPostulaciones, cbError
     );
 }
@@ -228,7 +228,7 @@ function guardarFotoAutomatico(fotoBase64) {
     var idUsuario = localStorage.getItem("idUsuario");
 
     callApi(
-        "http://localhost:8080/ResgistroUsuario/" + idUsuario + "/foto", "PUT",
+        API_BASE_URL + "/ResgistroUsuario/" + idUsuario + "/foto", "PUT",
         { "foto": fotoBase64 },
         function () {
             fotoBase64Nueva = null;

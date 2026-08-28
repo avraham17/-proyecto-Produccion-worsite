@@ -126,7 +126,7 @@ saveData (newRegistro);
 }
 
 function saveData (data) {
-var base_url = "http://localhost:8080/ResgistroUsuario";
+var base_url = API_BASE_URL + "/ResgistroUsuario";
 var method = "POST";
 callApi (base_url, method, data, cbSuccess, cbError);
 

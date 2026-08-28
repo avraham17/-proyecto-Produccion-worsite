@@ -10,7 +10,7 @@ $(function () {
     }
 
     callApi(
-        "http://localhost:8080/oferta/" + idOferta,
+        API_BASE_URL + "/oferta/" + idOferta,
         "GET",
         null,
         cargarOferta,
@@ -46,7 +46,7 @@ $(function () {
         };
 
         callApi(
-            "http://localhost:8080/postulacion",
+            API_BASE_URL + "/postulacion",
             "POST",
             postulacion,
             function (response) {
