@@ -5,7 +5,7 @@
 // - En producción (Railway, etc.): la URL pública de tu backend
 //   Ejemplo: "https://worksite-backend.up.railway.app"
 // ============================================================
-var API_BASE_URL = "http://localhost:8080";
+var API_BASE_URL = "https://worksite.up.railway.app";
 
 var validMethods = ["GET", "POST", "PUT", "DELETE"];
 
