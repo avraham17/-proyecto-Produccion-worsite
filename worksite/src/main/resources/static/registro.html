@@ -28,7 +28,7 @@
 
             <div>
                 <label>Correo electrónico</label>
-               <input type="email" id="correo" name="correo" required>
+               <input type="email" id="correo" name="correo" autocomplete="username email" required>
             </div>
 
             <div>
@@ -72,7 +72,7 @@
 
              <div>
                 <label>Cargo Profesional</label>
-                <input type="text" id="Cargo" name="cargo" required>
+                <input type="text" id="Cargo" name="cargo" autocomplete="organization-title" required>
             </div>
 
             <div>
@@ -106,12 +106,12 @@
 
             <div>
                 <label>Contraseña</label>
-                <input type="password" id="contraseña" name="password" required>
+                <input type="password" id="contraseña" name="password" autocomplete="new-password" required>
             </div>
 
             <div>
                 <label>Confirmar contraseña</label>
-                <input type="password" id="confirmar" name="confirmar" required>
+                <input type="password" id="confirmar" name="confirmar" autocomplete="new-password" required>
             </div>
 
             <div>
@@ -132,7 +132,7 @@
 
             <div id="grupoCodigoAdmin" style="display:none;">
                 <label>Código de administrador</label>
-                <input type="password" id="codigoAdmin" name="codigoAdmin" placeholder="Solo para cuentas de administrador">
+                <input type="password" id="codigoAdmin" name="codigoAdmin" autocomplete="off" placeholder="Solo para cuentas de administrador">
             </div>
 
           <button  id="botonRegistrarse"  type="button"  class="bntn bnt-primary" >Registrarse</button>
