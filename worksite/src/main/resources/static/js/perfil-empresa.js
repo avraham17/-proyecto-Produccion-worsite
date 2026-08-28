@@ -12,7 +12,7 @@ function loadData() {
     var idUsuario = localStorage.getItem("idUsuario");
     var rol = localStorage.getItem("rol");
 
-    callApi("/empresa/usuario/" + idUsuario, "GET", null, function (response) {
+    callApi("http://localhost:8080/empresa/usuario/" + idUsuario, "GET", null, function (response) {
         cargarPerfil({ data: response.data });
     }, function (error) {
         console.log("No se encontró un perfil empresarial asociado a tu cuenta:", error);
@@ -57,11 +57,11 @@ function updateData(datos) {
         alert("Aún no se ha cargado tu perfil empresarial");
         return;
     }
-    callApi("/empresa/" + empresaId, "PUT", datos, actualizarPerfil, cbError);
+    callApi("http://localhost:8080/empresa/" + empresaId, "PUT", datos, actualizarPerfil, cbError);
 }
 
 function deleteData(correo) {
-    callApi("/empresa/correo/" + correo, "DELETE", null, eliminarPerfil, cbError);
+    callApi("http://localhost:8080/empresa/correo/" + correo, "DELETE", null, eliminarPerfil, cbError);
 }
 
 function cargarPerfil(response) {
@@ -104,7 +104,7 @@ function eliminarPerfil(response) {
 }
 
 function cargarOfertasEmpresa() {
-    callApi("/oferta/empresa/" + empresaId, "GET", null, function (response) {
+    callApi("http://localhost:8080/oferta/empresa/" + empresaId, "GET", null, function (response) {
         var misOfertas = response.data || [];
 
         
@@ -195,7 +195,7 @@ function renderOfertas(misOfertas) {
         contenedor.append(card);
 
         // Trae el conteo real de postulantes para esta oferta específica
-        callApi("/postulacion/oferta/" + o.id, "GET", null, function (resp) {
+        callApi("http://localhost:8080/postulacion/oferta/" + o.id, "GET", null, function (resp) {
             var cantidad = (resp.data || []).length;
             totalPostulantesGlobal += cantidad;
 
@@ -241,7 +241,7 @@ function toggleEstadoOferta(o, nuevoEstado) {
         "estado": nuevoEstado
     };
 
-    callApi("/oferta/" + o.id, "PUT", datosActualizados, function () {
+    callApi("http://localhost:8080/oferta/" + o.id, "PUT", datosActualizados, function () {
         cargarOfertasEmpresa();
     }, cbError);
 }
@@ -255,7 +255,7 @@ function mostrarPostulantes(idOferta, tituloOferta) {
     var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPostulantes'));
     modal.show();
 
-    callApi("/postulacion/oferta/" + idOferta, "GET", null, function (response) {
+    callApi("http://localhost:8080/postulacion/oferta/" + idOferta, "GET", null, function (response) {
         var postulantes = response.data || [];
 
         var contenedor = $("#listaPostulantes");
@@ -306,7 +306,7 @@ function mostrarPostulantes(idOferta, tituloOferta) {
             contenedor.append(fila);
 
             // Trae el perfil completo del candidato para mostrar sus datos extra
-            callApi("/ResgistroUsuario/" + p.idCandidato, "GET", null, function (resp) {
+            callApi("http://localhost:8080/ResgistroUsuario/" + p.idCandidato, "GET", null, function (resp) {
                 var c = resp.data;
                 avatar.text((c.nombres || "?").trim().charAt(0).toUpperCase());
 
@@ -320,18 +320,6 @@ function mostrarPostulantes(idOferta, tituloOferta) {
                     fila_detalle("🎂 Fecha de Nacimiento", c.fechaNacimiento) +
                     fila_detalle("📝 Descripción", c.Descripcion, true)
                 );
-
-                var contenedorCv = $('<div class="emp-postulante-detalle emp-postulante-detalle-full"></div>');
-                if (c.cv) {
-                    var btnVerCv = $('<button type="button" class="emp-btn-ver">📄 Ver hoja de vida</button>');
-                    btnVerCv.on("click", function () {
-                        verHojaDeVida(c.cv);
-                    });
-                    contenedorCv.append(btnVerCv);
-                } else {
-                    contenedorCv.html('<span class="emp-postulante-detalle-label">📄 Este candidato aún no ha subido su hoja de vida</span>');
-                }
-                detalles.append(contenedorCv);
             }, function () {
                 avatar.text((p.candidato || "?").trim().charAt(0).toUpperCase());
                 detalles.html('<span class="emp-postulante-detalle-error">No se pudieron cargar los datos adicionales del candidato.</span>');
@@ -365,42 +353,9 @@ function cambiarEstadoPostulacion(p, nuevoEstado, idOferta, tituloOferta) {
         "estadoPostulacion": nuevoEstado
     };
 
-    callApi("/postulacion/" + p.idPostulacion, "PUT", datosActualizados, function () {
+    callApi("http://localhost:8080/postulacion/" + p.idPostulacion, "PUT", datosActualizados, function () {
         mostrarPostulantes(idOferta, tituloOferta);
     }, cbError);
-}
-
-// El modal visor de PDF se inyecta por JS (no depende de que exista en el
-// HTML). Se usa tanto para ver la hoja de vida de un candidato.
-function asegurarModalVerCv() {
-    if (document.getElementById('modalVerCv')) return;
-
-    $("body").append(
-        '<div class="modal fade" id="modalVerCv" tabindex="-1">' +
-            '<div class="modal-dialog modal-lg modal-dialog-scrollable">' +
-                '<div class="modal-content" style="height:85vh;">' +
-                    '<div class="modal-header">' +
-                        '<h2 class="modal-title">Hoja de vida</h2>' +
-                        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>' +
-                    '</div>' +
-                    '<div class="modal-body p-0" style="height:100%;">' +
-                        '<iframe id="iframeCv" src="" style="width:100%; height:100%; border:none;"></iframe>' +
-                    '</div>' +
-                '</div>' +
-            '</div>' +
-        '</div>'
-    );
-
-    $("#modalVerCv").on("hidden.bs.modal", function () {
-        $("#iframeCv").attr("src", "");
-    });
-}
-
-function verHojaDeVida(cvBase64) {
-    asegurarModalVerCv();
-    $("#iframeCv").attr("src", cvBase64);
-    var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalVerCv'));
-    modal.show();
 }
 
 $(function () {
@@ -442,7 +397,7 @@ $(function () {
             return;
         }
 
-        callApi("/empresa/" + empresaId, "PUT", datosActualizados, function (response) {
+        callApi("http://localhost:8080/empresa/" + empresaId, "PUT", datosActualizados, function (response) {
             actualizarPerfil(response);
 
             var modal = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
@@ -478,7 +433,7 @@ function guardarFotoAutomatico(fotoBase64) {
     }
 
     callApi(
-        "/empresa/" + empresaId + "/foto", "PUT",
+        "http://localhost:8080/empresa/" + empresaId + "/foto", "PUT",
         { "foto": fotoBase64 },
         function () {
             fotoBase64Nueva = null;

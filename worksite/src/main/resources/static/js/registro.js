@@ -1,39 +1,9 @@
 var registros = [];
-var cvBase64 = null; // se llena de forma asíncrona al elegir el archivo
 
 $(function (){
 
-$("#nombre, #Apellido, #correo, #tipoDocumento, #Cedula, #telefono, #fechaNacimiento, #Genero, #experiencia, #contraseña, #confirmar, #Descripcion, #Estudio, #Cargo, #Ciudad ").on("change", onChangeInputWithErrorClass);
+$("#nombre, #Apellido, #correo, #tipoDocumento, #Cedula, #telefono, #fechaNacimiento, #Genero, #experiencia, #contraseña, #confirmar, #cv, #Descripcion, #Estudio, #Cargo, #Ciudad ").on("change", onChangeInputWithErrorClass);
 $("#botonRegistrarse").click(onClickButton);
-
-// El campo de código de administrador solo se muestra (y se exige) si
-// el usuario elige la cuenta ADMIN. Para cualquier otro rol se oculta
-// y se limpia, para no mandarlo por accidente.
-$("#rol").on("change", function () {
-    if ($(this).val() === "ADMIN") {
-        $("#grupoCodigoAdmin").show();
-    } else {
-        $("#grupoCodigoAdmin").hide();
-        $("#codigoAdmin").val("").removeClass("error");
-    }
-});
-
-// La hoja de vida se lee como base64 en cuanto se elige el archivo (no al
-// enviar el formulario), porque leer un archivo es asíncrono y así evitamos
-// tener que reestructurar todo el submit para esperar el FileReader.
-$("#cv").on("change", function (e) {
-    removeClassError(e.target);
-    var file = e.target.files[0];
-    if (!file) {
-        cvBase64 = null;
-        return;
-    }
-    var reader = new FileReader();
-    reader.onload = function (ev) {
-        cvBase64 = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-});
 
 });
 
@@ -125,12 +95,6 @@ var onClickButton = function (e) {
     isFormValid = false;
   }
 
-  // El código de administrador solo es obligatorio si eligieron ese rol.
-  if ($("#rol").val() === "ADMIN" && $("#codigoAdmin").val() === "") {
-    $("#codigoAdmin").addClass("error");
-    isFormValid = false;
-  }
-
   if (!isFormValid) {
     alert("Formulario incompleto!");
     return;
@@ -152,8 +116,6 @@ var onClickButton = function (e) {
     "estudio": $("#Estudio").val (),
     "descripcion": $("#Descripcion").val (),
     "rolNombre": $("#rol").val (),
-    "codigoAdmin": $("#codigoAdmin").val (),
-    "cv": cvBase64,
     
   };
 
@@ -164,7 +126,7 @@ saveData (newRegistro);
 }
 
 function saveData (data) {
-var base_url = "/ResgistroUsuario";
+var base_url = "http://localhost:8080/ResgistroUsuario";
 var method = "POST";
 callApi (base_url, method, data, cbSuccess, cbError);
 
@@ -178,7 +140,6 @@ function cbSuccess (data)  {
 
   alert("Registro guardado correctamente");
     $("#formRegistro")[0].reset();
-    cvBase64 = null;
 
     localStorage.setItem("idUsuario", data.data.id);
     localStorage.setItem("correoUsuario", data.data.correoElectronico);
@@ -193,6 +154,5 @@ function cbSuccess (data)  {
 }
 
 function cbError (data)  {
-  var mensaje = (data && data.message) ? data.message : "Ocurrió un error al registrarte. Intenta de nuevo.";
-  alert(mensaje);
+  alert(JSON.stringify(data));
 }

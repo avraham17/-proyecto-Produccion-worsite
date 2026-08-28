@@ -20,7 +20,7 @@ $(function () {
     $("#botonPublicar").prop("disabled", true);
     $("#empresa").val("Cargando...").prop("readonly", true);
 
-    callApi("/empresa/usuario/" + idUsuario, "GET", null, function (response) {
+    callApi("http://localhost:8080/empresa/usuario/" + idUsuario, "GET", null, function (response) {
         var miEmpresa = response.data;
 
         // Guardamos el id real de la empresa; el nombre solo se muestra como referencia visual
@@ -82,7 +82,7 @@ $(function () {
         console.log("Enviando oferta:", nuevaOferta);
 
         callApi(
-            "/oferta", "POST", nuevaOferta,
+            "http://localhost:8080/oferta", "POST", nuevaOferta,
             function (response) {
                 alert("Oferta publicada correctamente");
                 window.location.href = "perfil-empresa.html";

@@ -144,11 +144,15 @@ nav {
   display: flex;
   align-items: center;
   gap: 16px;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .est-stat-card:hover {
   transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
 }
 
 .est-stat-icon {
@@ -219,10 +223,147 @@ nav {
   margin-bottom: 12px;
 }
 
+/* =========================
+   GESTIÓN DE PERFILES (tablas)
+========================= */
+.est-perfiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.est-tabla-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+}
+
+.est-tabla-card-full {
+  grid-column: 1 / -1;
+}
+
+.est-tabla-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.est-tabla-header .est-chart-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.est-buscador {
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.est-buscador:focus {
+  border-color: #2563eb;
+}
+
+.est-tabla-wrapper {
+  overflow-x: auto;
+}
+
+.est-tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.est-tabla th {
+  text-align: left;
+  font-size: 12.5px;
+  color: #6b7280;
+  padding: 10px 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.est-tabla td {
+  padding: 10px 8px;
+  font-size: 13.5px;
+  color: #374151;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.est-tabla tr:last-child td {
+  border-bottom: none;
+}
+
+.est-tabla-vacia {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+  padding: 24px 0;
+}
+
+.est-btn-ver {
+  display: inline-block;
+  padding: 5px 12px;
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.est-btn-ver:hover {
+  opacity: 0.85;
+}
+
 footer {
   text-align: center;
   padding: 25px;
   background: white;
   color: #777;
   font-size: 14px;
+}
+
+/* =========================
+   DETALLE (candidato / oferta)
+========================= */
+#contenidoPerfil h2,
+#contenidoOferta h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #07286f;
+  margin: 0 0 4px;
+}
+
+#contenidoPerfil p,
+#contenidoOferta > p {
+  font-size: 13.5px;
+  color: #6b7280;
+  margin: 0 0 4px;
+}
+
+#contenidoOferta h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #07286f;
+  margin: 18px 0 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#contenidoOferta p#descripcionOferta,
+#contenidoOferta p#responsabilidadesOferta,
+#contenidoOferta p#requisitosOferta {
+  font-size: 13.5px;
+  color: #374151;
+  margin-bottom: 0;
 }

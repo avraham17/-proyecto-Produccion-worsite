@@ -42,8 +42,9 @@ function callApi(url, method, data, cbSuccess, cbError) {
                 console.log("Error en cbSuccess", e);
             }
         },
-        error: function (xhr, status, error) {
+        error: function (xhr, status , error) {
             try {
+                alert("STATUS: " + xhr.status + "\nERROR: " + error + "\nRESPUESTA (primeros 300 chars): " + xhr.responseText.substring(0,300) + "\n...\n(últimos 300 chars): " + xhr.responseText.substring(xhr.responseText.length-300));
                 console.log("STATUS:", xhr.status);
                 console.log("ERROR:", error);
                 console.log("RESPUESTA:", xhr.responseText);

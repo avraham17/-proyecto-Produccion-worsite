@@ -1,6 +1,5 @@
 var usuarioActual = null; // objeto completo, para precargar el modal de edición
 var fotoBase64Nueva = null; // guarda la foto recién seleccionada (en base64) hasta que se guarde
-var cvActual = null; // guarda el cv (base64) actual, para poder abrirlo en el modal visor
 
     function cbError(error) {
         console.error("Error en la petición:", error);
@@ -11,20 +10,20 @@ var cvActual = null; // guarda el cv (base64) actual, para poder abrirlo en el m
     function loadData(idUsuario){
 
         callApi(
-        "/ResgistroUsuario/" + idUsuario,"GET",null,cargarPerfil,cbError
+        "http://localhost:8080/ResgistroUsuario/" + idUsuario,"GET",null,cargarPerfil,cbError
         );
     }
 
     function updateData(idUsuario, datos){
 
         callApi(
-        "/ResgistroUsuario/" + idUsuario,"PUT",datos,actualizarPerfil,cbError
+        "http://localhost:8080/ResgistroUsuario/" + idUsuario,"PUT",datos,actualizarPerfil,cbError
         );
     }
 
     function deleteData(correo){
         callApi(
-            "/ResgistroUsuario/correo/" + correo, "DELETE", null, eliminarPerfil, cbError
+            "http://localhost:8080/ResgistroUsuario/correo/" + correo, "DELETE", null, eliminarPerfil, cbError
         );
     }
 
@@ -48,8 +47,6 @@ var cvActual = null; // guarda el cv (base64) actual, para poder abrirlo en el m
         if (response.data.foto) {
             $("#fotoPreview").attr("src", response.data.foto);
         }
-
-        mostrarEstadoCv(response.data.cv);
 
     }
 
@@ -84,19 +81,6 @@ var cvActual = null; // guarda el cv (base64) actual, para poder abrirlo en el m
         alert("Perfil eliminado correctamente");
         localStorage.removeItem("idUsuario");
         window.location.href = "sesion.html";
-    }
-
-    // Muestra el botón "Ver mi hoja de vida" si hay un cv guardado; si no, el
-    // mensaje de que aún no ha subido ninguno.
-    function mostrarEstadoCv(cvBase64) {
-        cvActual = cvBase64 || null;
-        if (cvActual) {
-            $("#btnVerCv").show();
-            $("#sinCv").hide();
-        } else {
-            $("#btnVerCv").hide();
-            $("#sinCv").show();
-        }
     }
 
     $(function () {
@@ -140,28 +124,6 @@ var cvActual = null; // guarda el cv (base64) actual, para poder abrirlo en el m
             }
         });
 
-        $("#inputCv").on("change", function (e) {
-            var file = e.target.files[0];
-            if (!file) return;
-
-            var reader = new FileReader();
-            reader.onload = function (ev) {
-                guardarCvAutomatico(ev.target.result);
-            };
-            reader.readAsDataURL(file);
-        });
-
-        $("#btnVerCv").on("click", function () {
-            if (!cvActual) return;
-            $("#iframeCv").attr("src", cvActual);
-            var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalVerCv'));
-            modal.show();
-        });
-
-        $("#modalVerCv").on("hidden.bs.modal", function () {
-            $("#iframeCv").attr("src", "");
-        });
-
             $("#guardarEdicion").on("click", function () {
             var idUsuario = localStorage.getItem("idUsuario");
 
@@ -202,7 +164,7 @@ function cargarPostulaciones() {
     var idUsuario = localStorage.getItem("idUsuario");
 
     callApi(
-        "/postulacion/candidato/" + idUsuario, "GET", null,
+        "http://localhost:8080/postulacion/candidato/" + idUsuario, "GET", null,
         mostrarPostulaciones, cbError
     );
 }
@@ -266,26 +228,11 @@ function guardarFotoAutomatico(fotoBase64) {
     var idUsuario = localStorage.getItem("idUsuario");
 
     callApi(
-        "/ResgistroUsuario/" + idUsuario + "/foto", "PUT",
+        "http://localhost:8080/ResgistroUsuario/" + idUsuario + "/foto", "PUT",
         { "foto": fotoBase64 },
         function () {
             fotoBase64Nueva = null;
             loadData(idUsuario); // recarga el perfil para reflejar la foto guardada
-        },
-        cbError
-    );
-}
-
-// Mismo patrón que la foto: endpoint dedicado, se guarda apenas se elige el archivo.
-function guardarCvAutomatico(cvBase64) {
-    var idUsuario = localStorage.getItem("idUsuario");
-
-    callApi(
-        "/ResgistroUsuario/" + idUsuario + "/cv", "PUT",
-        { "cv": cvBase64 },
-        function () {
-            mostrarEstadoCv(cvBase64);
-            alert("Hoja de vida guardada correctamente");
         },
         cbError
     );

@@ -3,7 +3,7 @@ $(function () {
 });
 
 function cargarEstadisticas() {
-    callApi("/estadisticas", "GET", null, mostrarEstadisticas, function (error) {
+    callApi("http://localhost:8080/estadisticas", "GET", null, mostrarEstadisticas, function (error) {
         console.error("Error al cargar estadísticas:", error);
         $("#estadoCargando").hide();
         $("#estadoError").show();
