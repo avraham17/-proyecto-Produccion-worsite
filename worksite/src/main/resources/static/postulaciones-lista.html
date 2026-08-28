@@ -90,7 +90,7 @@
   });
 
   function cargarPostulaciones() {
-    callApi("http://localhost:8080/api/admin/postulaciones", "GET", null,
+    callApi(API_BASE_URL + "/api/admin/postulaciones", "GET", null,
       function (response) {
         console.log("RESPUESTA POSTULACIONES:", response);
 

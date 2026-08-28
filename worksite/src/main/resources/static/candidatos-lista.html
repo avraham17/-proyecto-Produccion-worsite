@@ -90,7 +90,7 @@
   });
 
   function cargarCandidatos() {
-    callApi("http://localhost:8080/api/admin/candidatos", "GET", null,
+    callApi(API_BASE_URL + "/api/admin/candidatos", "GET", null,
       function (response) {
         console.log("Respuesta candidatos:", response);
 

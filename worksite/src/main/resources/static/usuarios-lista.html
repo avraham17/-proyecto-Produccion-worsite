@@ -119,7 +119,7 @@
   });
 
   function cargarCandidatos() {
-    callApi("http://localhost:8080/api/admin/candidatos", "GET", null,
+    callApi(API_BASE_URL + "/api/admin/candidatos", "GET", null,
       function (response) {
         console.log("RESPUESTA CANDIDATOS:", response);
 
@@ -141,7 +141,7 @@
   }
 
   function cargarEmpresas() {
-    callApi("http://localhost:8080/api/admin/empresas", "GET", null,
+    callApi(API_BASE_URL + "/api/admin/empresas", "GET", null,
       function (response) {
         console.log("RESPUESTA EMPRESAS:", response);
         var cuerpo = document.getElementById('cuerpoTablaEmpresas');

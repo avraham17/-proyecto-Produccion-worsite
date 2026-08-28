@@ -98,7 +98,7 @@
   });
 
   function cargarOfertas() {
-    callApi("http://localhost:8080/api/admin/ofertas", "GET", null,
+    callApi(API_BASE_URL + "/api/admin/ofertas", "GET", null,
       function (response) {
         console.log("RESPUESTA OFERTAS:",response);
 
