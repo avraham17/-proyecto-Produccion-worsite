@@ -126,9 +126,21 @@ public class ResgistroUsuarioService {
         return dto;
     }
 
-    public boolean updateContrasenia(long id, String contrasenia) {
+    /**
+     * Cambia la contraseña de un usuario, validando en el servidor que la
+     * contraseña actual enviada coincide con el hash almacenado (nunca se
+     * compara texto plano contra el hash desde el frontend).
+     */
+    public boolean updateContrasenia(long id, String contraseniaActual, String contraseniaNueva) {
+        validateEsPropietario(id);
+
         ResgistroUsuarioEntity e = validateIfExistsById(id);
-        e.setContrasenia(passwordEncoder.encode(contrasenia));
+
+        if (!passwordEncoder.matches(contraseniaActual, e.getContrasenia())) {
+            throw new AccessDeniedException("La contraseña actual es incorrecta");
+        }
+
+        e.setContrasenia(passwordEncoder.encode(contraseniaNueva));
         repository.save(e);
         return true;
     }

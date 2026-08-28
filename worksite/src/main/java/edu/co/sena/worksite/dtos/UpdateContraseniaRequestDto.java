@@ -1,10 +1,10 @@
 package edu.co.sena.worksite.dtos;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Data
 @Builder
@@ -12,6 +12,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UpdateContraseniaRequestDto {
 
-    @NotNull
-    private String contrasenia;
+    @NotBlank(message = "La contraseña actual es obligatoria")
+    private String contraseniaActual;
+
+    @NotBlank(message = "La nueva contraseña es obligatoria")
+    private String contraseniaNueva;
 }

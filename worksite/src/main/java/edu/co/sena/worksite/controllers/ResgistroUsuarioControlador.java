@@ -73,12 +73,15 @@ public class ResgistroUsuarioControlador {
                 .build();
     }
 
+    // Ahora recibe tanto la contraseña actual como la nueva: el servidor
+    // valida la actual contra el hash guardado (passwordEncoder.matches),
+    // nunca se compara en el frontend contra el hash.
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}/contrasenia")
     public ResponseDto<ResgistroUsuarioResponseDto> updateContrasenia
             (@PathVariable("id") long id, @RequestBody @Validated UpdateContraseniaRequestDto dto) {
 
-        boolean response = this.service.updateContrasenia(id, dto.getContrasenia());
+        boolean response = this.service.updateContrasenia(id, dto.getContraseniaActual(), dto.getContraseniaNueva());
 
         return ResponseDto.<ResgistroUsuarioResponseDto>builder()
                 .data(ResgistroUsuarioResponseDto.builder()

@@ -1,12 +1,16 @@
-    
-    function updateData(idUsuario, contrasenia) {
+function updateData(idUsuario, datosContrasenia) {
 
     callApi(
-            API_BASE_URL + "/ResgistroUsuario/" + idUsuario + "/contrasenia",
+            "/ResgistroUsuario/" + idUsuario + "/contrasenia",
             "PUT",
-            contrasenia,
+            datosContrasenia,
             actualizarContrasenia,
-            cbError
+            function (error) {
+                // El backend valida la contraseña actual (passwordEncoder.matches)
+                // y devuelve un mensaje claro si no coincide.
+                var mensaje = (error && error.message) ? error.message : "No se pudo actualizar la contraseña";
+                alert(mensaje);
+            }
             );
     }
 
@@ -23,12 +27,6 @@
         $("#btnActualizarPass").on("click", function () {
             var idUsuario = localStorage.getItem("idUsuario");
 
-            var datosActualizados ={
-                "contrasenia": $("#passNueva").val(),
-            };
-
-             
-            
             if ($("#passActual").val() === "" || $("#passNueva").val() === "" || $("#passConfirmar").val() === "") {
                 alert("Por favor, complete todos los campos");
                 return;
@@ -42,31 +40,14 @@
                 return;
             }
 
-            callApi(
-                API_BASE_URL + "/ResgistroUsuario/" + idUsuario,
-                "GET", null,
-               
-                function (response) {
-                    var contraseniaBD = response.data.contrasenia;
+            // La contraseña actual ya NO se compara aquí: se manda al backend,
+            // que la valida contra el hash guardado con passwordEncoder.matches.
+            var datosContrasenia = {
+                "contraseniaActual": $("#passActual").val(),
+                "contraseniaNueva": $("#passNueva").val()
+            };
 
-                
-                    if ($("#passActual").val() !== contraseniaBD) {
-                        alert("La contraseña actual es incorrecta");
-                        return;
-                    }
-
-                    var datosActualizados = {
-                        "contrasenia": $("#passNueva").val()
-                    };
-
-                    updateData(idUsuario, datosActualizados);
-           
-                },
-                cbError
-            );
-
-        
-            
+            updateData(idUsuario, datosContrasenia);
         });
     });
 
