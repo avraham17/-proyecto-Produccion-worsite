@@ -1,9 +1,29 @@
+
+var filtroURL = (function () {
+    var params = new URLSearchParams(window.location.search);
+    return {
+        busqueda: params.get("busqueda") || "",
+        ciudad: params.get("ciudad") || "",
+        sector: params.get("sector") || ""
+    };
+})();
+
 $(function () {
-   
+
+    if (filtroURL.busqueda) {
+        $("#filtroBusqueda").val(filtroURL.busqueda);
+    }
+    if (filtroURL.ciudad) {
+        $("#filtroCiudad").val(filtroURL.ciudad);
+    }
+
     cargarVacantes();
 
     $("#btnFiltrar").on("click", cargarVacantes);
     $("#filtroBusqueda").on("keypress", function (e) {
+        if (e.which === 13) cargarVacantes();
+    });
+    $("#filtroCiudad").on("keypress", function (e) {
         if (e.which === 13) cargarVacantes();
     });
 });
@@ -12,12 +32,13 @@ function cargarVacantes() {
     $("#listaVacantes").html('<div class="estado-info">Cargando vacantes…</div>');
     $("#estadoInfo").hide();
 
-    callApi(API_BASE_URL + "/oferta", "GET", null,
+    callApi("/oferta", "GET", null,
         function (response) {
             var ofertas = response.data;
             var busqueda  = $("#filtroBusqueda").val().toLowerCase();
             var modalidad = $("#filtroModalidad").val().toLowerCase();
-            var sector    = $("#filtroSector").val().toLowerCase();
+            var sector    = ($("#filtroSector").val().toLowerCase()) || filtroURL.sector.toLowerCase();
+            var ciudad    = ($("#filtroCiudad").val().toLowerCase()) || filtroURL.ciudad.toLowerCase();
 
             ofertas = ofertas.filter(function (o) {
                 var okTexto = !busqueda ||
@@ -26,7 +47,8 @@ function cargarVacantes() {
                     (o.descripcion && o.descripcion.toLowerCase().includes(busqueda));
                 var okModal  = !modalidad || (o.modalidad && o.modalidad.toLowerCase().includes(modalidad));
                 var okSector = !sector    || (o.sector    && o.sector.toLowerCase().includes(sector));
-                return okTexto && okModal && okSector && o.estado === "activa";
+                var okCiudad = !ciudad    || (o.ubicacion && o.ubicacion.toLowerCase().includes(ciudad));
+                return okTexto && okModal && okSector && okCiudad && o.estado === "activa";
             });
 
             $("#listaVacantes").html("");

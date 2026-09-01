@@ -53,9 +53,9 @@
       <h1>Encuentra el trabajo ideal para ti</h1>
       <p>Explora miles de oportunidades laborales en un solo lugar</p>
       <div class="search-box">
-        <input type="text" placeholder="Cargo o palabra clave">
-        <input type="text" placeholder="Ciudad o país">
-        <button>Buscar</button>
+        <input type="text" id="buscarCargo" placeholder="Cargo o palabra clave">
+        <input type="text" id="buscarCiudad" placeholder="Ciudad o país">
+        <button type="button" id="btnBuscarInicio">Buscar</button>
       </div>
     </div>
 
@@ -69,46 +69,26 @@
 <section class="section">
   <h2>Categorías populares</h2>
   <div class="categories">
-    <div class="category">💻 Tecnología</div>
-    <div class="category">📊 Administración</div>
-    <div class="category">🎨 Diseño</div>
-    <div class="category">📈 Marketing</div>
-    <div class="category">🏥 Salud</div>
-    <div class="category">⚙ Ingeniería</div>
+    <div class="category" data-sector="Tecnología">💻 Tecnología</div>
+    <div class="category" data-sector="Administración">📊 Administración</div>
+    <div class="category" data-sector="Diseño">🎨 Diseño</div>
+    <div class="category" data-sector="Marketing">📈 Marketing</div>
+    <div class="category" data-sector="Salud">🏥 Salud</div>
+    <div class="category" data-sector="Ingeniería">⚙ Ingeniería</div>
   </div>
 </section>
 
 <section class="section">
   <h2>Empleos destacados</h2>
-  <div class="jobs">
-    <div class="job-card">
-      <h3>Desarrollador Frontend</h3>
-      <p>Empresa: Tech Solutions</p>
-      <p>Ubicación: Remoto</p>
-      <p>Salario: $3.000.000</p>
-      <button>Aplicar</button>
-    </div>
-    <div class="job-card">
-      <h3>Diseñador UX/UI</h3>
-      <p>Empresa: Creative Lab</p>
-      <p>Ubicación: Bogotá</p>
-      <p>Salario: $2.500.000</p>
-      <button>Aplicar</button>
-    </div>
-    <div class="job-card">
-      <h3>Analista de Datos</h3>
-      <p>Empresa: Data Corp</p>
-      <p>Ubicación: Cali</p>
-      <p>Salario: $4.200.000</p>
-      <button>Aplicar</button>
-    </div>
+  <div class="jobs" id="jobsDestacados">
+    <div class="estado-info">Cargando ofertas destacadas…</div>
   </div>
 </section>
 
 <section class="cta">
   <h2>¿Eres empresa?</h2>
   <p>Publica tus vacantes y encuentra talento rápidamente</p>
-  <button>Publicar empleo</button>
+  <button type="button" id="btnPublicarEmpleo">Publicar empleo</button>
 </section>
 
 <footer>

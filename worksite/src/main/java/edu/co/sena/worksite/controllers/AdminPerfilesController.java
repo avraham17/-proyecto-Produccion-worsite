@@ -20,37 +20,44 @@ public class AdminPerfilesController {
     private AdminPerfilesService adminPerfilesService;
 
     @GetMapping("/candidatos")
-    public List<CandidatoResumenDto> listarCandidatos() {
+    public List<CandidatoResumenDto> listarCandidatos()
+    {
         return adminPerfilesService.listarCandidatos();
     }
 
     @GetMapping("/candidatos/{id}")
-    public CandidatoDetalleDto verCandidato(@PathVariable int id) {
+    public CandidatoDetalleDto verCandidato(@PathVariable int id)
+    {
         return adminPerfilesService.obtenerCandidato(id);
     }
 
     @GetMapping("/empresas")
-    public List<EmpresaResumenDto> listarEmpresas() {
+    public List<EmpresaResumenDto> listarEmpresas()
+    {
         return adminPerfilesService.listarEmpresas();
     }
 
     @GetMapping("/empresas/{id}")
-    public EmpresaEntity verEmpresa(@PathVariable int id) {
+    public EmpresaEntity verEmpresa(@PathVariable int id)
+    {
         return adminPerfilesService.obtenerEmpresa(id);
     }
 
     @GetMapping("/ofertas")
-    public List<OfertaResumenDto> listarOfertas() {
+    public List<OfertaResumenDto> listarOfertas()
+    {
         return adminPerfilesService.listarOfertas();
     }
 
     @GetMapping("/ofertas/{id}")
-    public OfertaDetalleDto verOferta(@PathVariable int id) {
+    public OfertaDetalleDto verOferta(@PathVariable int id)
+    {
         return adminPerfilesService.obtenerOferta(id);
     }
 
     @GetMapping("/postulaciones")
-    public List<PostulacionResumenDto> listarPostulaciones() {
+    public List<PostulacionResumenDto> listarPostulaciones()
+    {
         return adminPerfilesService.listarPostulaciones();
     }
 }
