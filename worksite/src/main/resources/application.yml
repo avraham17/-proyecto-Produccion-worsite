@@ -39,5 +39,10 @@ worksite:
   admin:
     codigo: ${WORKSITE_ADMIN_CODIGO}
 
+    resend:
+    api:
+      key:
+      ${RESEND_API_KEY} from: Worksite <onboarding@resend.dev>
+
 server:
   port: ${PORT:3306}
