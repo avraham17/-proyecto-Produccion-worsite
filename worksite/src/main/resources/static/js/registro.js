@@ -5,6 +5,15 @@ $(function (){
 $("#nombre, #Apellido, #correo, #tipoDocumento, #Cedula, #telefono, #fechaNacimiento, #Genero, #experiencia, #contraseña, #confirmar, #cv, #Descripcion, #Estudio, #Cargo, #Ciudad ").on("change", onChangeInputWithErrorClass);
 $("#botonRegistrarse").click(onClickButton);
 
+$("#rol").on("change", function () {
+    if ($(this).val() === "ADMIN") {
+        $("#grupoCodigoAdmin").show();
+    } else {
+        $("#grupoCodigoAdmin").hide();
+        $("#codigoAdmin").val("");
+    }
+});
+
 });
 
 
@@ -95,6 +104,11 @@ var onClickButton = function (e) {
     isFormValid = false;
   }
 
+  if ($("#rol").val() === "ADMIN" && $("#codigoAdmin").val() === "") {
+    $("#codigoAdmin").addClass("error");
+    isFormValid = false;
+  }
+
   if (!isFormValid) {
     alert("Formulario incompleto!");
     return;
@@ -116,6 +130,7 @@ var onClickButton = function (e) {
     "estudio": $("#Estudio").val (),
     "descripcion": $("#Descripcion").val (),
     "rolNombre": $("#rol").val (),
+    "codigoAdmin": $("#codigoAdmin").val (),
     
   };
 

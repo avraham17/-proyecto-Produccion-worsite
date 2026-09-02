@@ -1,10 +1,4 @@
-// ============================================================
-// CONFIGURACIÓN DEL API
-// Este es el ÚNICO lugar donde debes cambiar la URL del backend.
-// - En desarrollo local: "http://localhost:8080"
-// - En producción (Railway, etc.): la URL pública de tu backend
-//   Ejemplo: "https://worksite-backend.up.railway.app"
-// ============================================================
+
 var API_BASE_URL = "https://worksite.up.railway.app";
 
 var validMethods = ["GET", "POST", "PUT", "DELETE"];
@@ -29,8 +23,7 @@ function callApi(url, method, data, cbSuccess, cbError) {
         jsonData = JSON.stringify(data);
     }
 
-    // Header de autenticación: se arma dinámicamente con el token real del login.
-    // Si no hay sesión (ej. en login/registro), simplemente no se manda el header.
+   
     var headers = {};
     var token = localStorage.getItem("token");
     if (token) {
@@ -58,8 +51,6 @@ function callApi(url, method, data, cbSuccess, cbError) {
                 console.log("ERROR:", error);
                 console.log("RESPUESTA:", xhr.responseText);
 
-                // Si el usuario no está autenticado o su token expiró/no es válido,
-                // lo mandamos directo a iniciar sesión de nuevo.
                 if (xhr.status === 401) {
                     localStorage.removeItem("token");
                     alert("Tu sesión expiró o no es válida. Inicia sesión de nuevo.");
@@ -71,7 +62,7 @@ function callApi(url, method, data, cbSuccess, cbError) {
                     alert("No tienes permiso para realizar esta acción.");
                 }
 
-                // Intentamos convertir la respuesta en un objeto usable (ej. error.message)
+                
                 var errorObj;
                 try {
                     errorObj = JSON.parse(xhr.responseText);
@@ -116,19 +107,19 @@ window.addEventListener("DOMContentLoaded", function () {
 
     const linkVerVacantes = document.getElementById("linkVerVacantes");
     if (linkVerVacantes) {
-        // Coincide con requireAuth(["CANDIDATO", "ADMIN"]) de vacantes.html
+       
         linkVerVacantes.style.display = (rol === "CANDIDATO" || rol === "ADMIN") ? "" : "none";
     }
 
     const linkPublicarOferta = document.getElementById("linkPublicarOferta");
     if (linkPublicarOferta) {
-        // Coincide con la validación de rol dentro de crear-oferta.js
+        
         linkPublicarOferta.style.display = (rol === "EMPRESA" || rol === "ADMIN") ? "" : "none";
     }
 
     const menuEstadisticas = document.getElementById("menuEstadisticas");
     if (menuEstadisticas) {
-        // Solo ADMIN
+      
         menuEstadisticas.style.display = (rol === "ADMIN") ? "" : "none";
     }
 
