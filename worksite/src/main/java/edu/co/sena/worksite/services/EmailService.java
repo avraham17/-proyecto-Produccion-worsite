@@ -1,7 +1,6 @@
 package edu.co.sena.worksite.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,6 @@ import java.util.Map;
 @Service
 public class EmailService {
 
-    // Se define en application.yml, y ahí referencia la variable de entorno
-    // RESEND_API_KEY configurada en Railway. Nunca se deja escrito en el código.
     @Value("${resend.api.key}")
     private String resendApiKey;
 
@@ -29,12 +26,7 @@ public class EmailService {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
-    private final ObjectMapper objectMapper;
-
-    @Autowired
-    public EmailService(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Async
     public void enviarCorreoHtml(String destinatario, String asunto, String contenidoHtml) {
