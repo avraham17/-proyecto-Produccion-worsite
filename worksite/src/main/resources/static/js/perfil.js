@@ -1,5 +1,5 @@
-var usuarioActual = null; // objeto completo, para precargar el modal de edición
-var fotoBase64Nueva = null; // guarda la foto recién seleccionada (en base64) hasta que se guarde
+var usuarioActual = null; 
+var fotoBase64Nueva = null; 
 
     function cbError(error) {
         console.error("Error en la petición:", error);
@@ -29,7 +29,7 @@ var fotoBase64Nueva = null; // guarda la foto recién seleccionada (en base64) h
 
     function cargarPerfil(response) {
         console.log(response.data);
-        usuarioActual = response.data; // guardamos todo para precargar el modal de edición
+        usuarioActual = response.data; 
 
         $("#nombreMostrar").text(response.data.nombres + " " + response.data.apellidos);
         $("#mostrarNombre").text(response.data.nombres + " " + response.data.apellidos);
@@ -43,10 +43,12 @@ var fotoBase64Nueva = null; // guarda la foto recién seleccionada (en base64) h
         $("#mostrarDescripcion").text(response.data.Descripcion);
         $("#mostrarCiudad").text(response.data.Ciudad);
 
-        // Pintamos la foto guardada (si existe) en el avatar de perfil
+        
         if (response.data.foto) {
             $("#fotoPreview").attr("src", response.data.foto);
         }
+
+        mostrarEnlaceCv(response.data.cv);
 
     }
 
@@ -69,7 +71,9 @@ var fotoBase64Nueva = null; // guarda la foto recién seleccionada (en base64) h
             $("#fotoPreview").attr("src", response.data.foto);
         }
 
-        fotoBase64Nueva = null; // ya se guardó, limpiamos el buffer temporal
+        mostrarEnlaceCv(response.data.cv);
+
+        fotoBase64Nueva = null;
 
         var idUsuario = localStorage.getItem("idUsuario");
 
@@ -109,7 +113,7 @@ var fotoBase64Nueva = null; // guarda la foto recién seleccionada (en base64) h
                 $("#editEstudio").val(usuarioActual.estudio || "");
                 $("#editDescripcion").val(usuarioActual.Descripcion || "");
                 $("#editTipoId").val(usuarioActual.tipoIdentificacion || "");
-                $("#editContrasenia").val(""); // nunca se precarga una contraseña
+                $("#editContrasenia").val(""); 
             }
             var modal = new bootstrap.Modal(document.getElementById('modalEditar'));
             modal.show();
@@ -140,13 +144,8 @@ var fotoBase64Nueva = null; // guarda la foto recién seleccionada (en base64) h
             "cargo": $("#editCargo").val(),
             "estudio": $("#editEstudio").val(),
             "descripcion": $("#editDescripcion").val(),
-            // Si se deja en blanco, mandamos la contraseña actual para no borrarla.
-            // OJO: esto es un parche del frontend; lo ideal es que el backend
-            // ignore este campo si llega vacío. Avísame si quieres que lo ajustemos ahí también.
             "contrasenia": $("#editContrasenia").val() || usuarioActual.contrasenia,
             "tipoIdentificacion": $("#editTipoId").val(),
-            // Si el usuario eligió una foto nueva la mandamos en base64;
-            // si no, mandamos la que ya tenía para que el backend no la borre.
             "foto": fotoBase64Nueva || usuarioActual.foto,
 
         };
@@ -213,17 +212,14 @@ function previewFoto(e) {
         reader.onload = ev => {
             const src = ev.target.result;
             document.getElementById('fotoPreview').src = src;
-            fotoBase64Nueva = src; // por si el usuario sigue y guarda el modal de edición
-            guardarFotoAutomatico(src); // el botón "Cambiar foto" guarda directo, sin pasar por el modal
+            fotoBase64Nueva = src; 
+            guardarFotoAutomatico(src); 
         };
         reader.readAsDataURL(file);
     }
 }
 
-// El botón "Cambiar foto" está fuera del modal de edición. En vez de reenviar
-// TODO el perfil (lo que fallaba por validaciones de otros campos, como la
-// contraseña, que aquí siempre llega null), usamos un endpoint dedicado que
-// solo actualiza la foto.
+
 function guardarFotoAutomatico(fotoBase64) {
     var idUsuario = localStorage.getItem("idUsuario");
 
@@ -232,7 +228,47 @@ function guardarFotoAutomatico(fotoBase64) {
         { "foto": fotoBase64 },
         function () {
             fotoBase64Nueva = null;
-            loadData(idUsuario); // recarga el perfil para reflejar la foto guardada
+            loadData(idUsuario); 
+        },
+        cbError
+    );
+}
+
+function mostrarEnlaceCv(cv) {
+    if (cv) {
+        $("#enlaceCv").attr("href", cv).show();
+        $("#labelSubirCv").text("Cambiar hoja de vida (PDF)");
+    } else {
+        $("#enlaceCv").hide();
+        $("#labelSubirCv").text("Subir hoja de vida (PDF)");
+    }
+}
+
+function previewCv(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+        alert("Solo se permiten archivos PDF");
+        e.target.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = ev => {
+        guardarCvAutomatico(ev.target.result); 
+    };
+    reader.readAsDataURL(file);
+}
+
+function guardarCvAutomatico(cvBase64) {
+    var idUsuario = localStorage.getItem("idUsuario");
+
+    callApi(
+        API_BASE_URL + "/ResgistroUsuario/" + idUsuario + "/cv", "PUT",
+        { "cv": cvBase64 },
+        function () {
+            loadData(idUsuario); 
         },
         cbError
     );

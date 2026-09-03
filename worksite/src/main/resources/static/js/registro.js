@@ -5,6 +5,7 @@ $(function (){
 $("#nombre, #Apellido, #correo, #tipoDocumento, #Cedula, #telefono, #fechaNacimiento, #Genero, #experiencia, #contraseña, #confirmar, #cv, #Descripcion, #Estudio, #Cargo, #Ciudad ").on("change", onChangeInputWithErrorClass);
 $("#botonRegistrarse").click(onClickButton);
 
+
 $("#rol").on("change", function () {
     if ($(this).val() === "ADMIN") {
         $("#grupoCodigoAdmin").show();
@@ -161,11 +162,51 @@ function cbSuccess (data)  {
     localStorage.setItem("rol", data.data.rolNombre);
     localStorage.setItem("token", data.data.token);
 
-    if (data.data.rolNombre === "EMPRESA") {
+    var archivoCv = document.getElementById("cv") ? document.getElementById("cv").files[0] : null;
+
+    if (archivoCv) {
+        subirCv(data.data.id, archivoCv, function () {
+            irAInicioSegunRol(data.data.rolNombre);
+        });
+    } else {
+        irAInicioSegunRol(data.data.rolNombre);
+    }
+}
+
+function irAInicioSegunRol(rolNombre) {
+    if (rolNombre === "EMPRESA") {
         window.location.href = "empresa.html";
     } else {
         window.location.href = "inicio 2.html";
     }
+}
+
+function subirCv(idUsuario, archivo, onDone) {
+    var lector = new FileReader();
+
+    lector.onload = function () {
+        var cvBase64 = lector.result; 
+
+        callApi(
+            API_BASE_URL + "/ResgistroUsuario/" + idUsuario + "/cv",
+            "PUT",
+            { "cv": cvBase64 },
+            function () {
+                onDone();
+            },
+            function (error) {
+                alert("Tu cuenta se creó, pero no se pudo subir la hoja de vida. Puedes intentarlo de nuevo desde tu perfil.");
+                onDone();
+            }
+        );
+    };
+
+    lector.onerror = function () {
+        alert("No se pudo leer el archivo PDF. Puedes subir tu hoja de vida más tarde desde tu perfil.");
+        onDone();
+    };
+
+    lector.readAsDataURL(archivo);
 }
 
 function cbError (data)  {
