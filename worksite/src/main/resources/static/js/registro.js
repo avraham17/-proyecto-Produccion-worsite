@@ -148,19 +148,20 @@ callApi (base_url, method, data, cbSuccess, cbError);
 
 }
 
-function cbSuccess (data)  {   
-  console.log(">>> Respuesta completa del registro:", data);
-  console.log(">>> data.data:", data.data);
-  console.log(">>> rolNombre recibido:", data.data ? data.data.rolNombre : "data.data es undefined");
-  console.log(">>> token recibido:", data.data ? data.data.token : "data.data es undefined");
+function cbSuccess (data)  {
 
   alert("Registro guardado correctamente");
-    $("#formRegistro")[0].reset();
+  $("#formRegistro")[0].reset();
 
-    localStorage.setItem("idUsuario", data.data.id);
-    localStorage.setItem("correoUsuario", data.data.correoElectronico);
-    localStorage.setItem("rol", data.data.rolNombre);
-    localStorage.setItem("token", data.data.token);
+  var nombreUsuario   = data.data.nombres   || data.data.nombre   || "";
+  var apellidoUsuario = data.data.apellidos || data.data.apellido || "";
+
+  localStorage.setItem("idUsuario", data.data.id);
+  localStorage.setItem("correoUsuario", data.data.correoElectronico);
+  localStorage.setItem("nombreUsuario", nombreUsuario);
+  localStorage.setItem("apellidoUsuario", apellidoUsuario);
+  localStorage.setItem("rol", data.data.rolNombre);
+  localStorage.setItem("token", data.data.token);
 
     var archivoCv = document.getElementById("cv") ? document.getElementById("cv").files[0] : null;
 
