@@ -1,4 +1,4 @@
-var API_BASE_URL = "http://localhost:8080";
+var API_BASE_URL = "http://worksite.up.railway.app";
 
 var validMethods = ["GET", "POST", "PUT", "DELETE"];
 
