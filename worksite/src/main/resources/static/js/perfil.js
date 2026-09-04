@@ -6,6 +6,18 @@ var fotoBase64Nueva = null;
     
     }
 
+  
+    function liberarFocoAntesDeOcultar(idModal) {
+        var modalEl = document.getElementById(idModal);
+        if (!modalEl) return;
+
+        modalEl.addEventListener('hide.bs.modal', function () {
+            if (document.activeElement && modalEl.contains(document.activeElement)) {
+                document.activeElement.blur();
+            }
+        });
+    }
+
 
     function loadData(idUsuario){
 
@@ -98,6 +110,9 @@ var fotoBase64Nueva = null;
             cargarPostulaciones();
         }
 
+            liberarFocoAntesDeOcultar('modalEditar');
+            liberarFocoAntesDeOcultar('modalConfirmarEliminar');
+
             $("#btneditar").on("click", function () {
             if (usuarioActual) {
                 $("#editNombres").val(usuarioActual.nombres || "");
@@ -121,13 +136,10 @@ var fotoBase64Nueva = null;
         });
 
         $("#btneliminar").on("click", function () {
-            // Cerramos el modal de edición antes de abrir el de confirmación,
-            // para no apilar el confirm() nativo (o dos modales) uno encima del otro.
+
             var modalEditar = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
             if (modalEditar) modalEditar.hide();
 
-            // Pequeño delay para dejar terminar la animación de cierre de Bootstrap
-            // antes de mostrar el siguiente modal (evita que se encimen los fondos oscuros).
             setTimeout(function () {
                 var modalConfirmar = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalConfirmarEliminar'));
                 modalConfirmar.show();
@@ -143,10 +155,7 @@ var fotoBase64Nueva = null;
             deleteData(correo);
         });
 
-        // Los navegadores bloquean la navegación directa a una URL "data:" en una
-        // pestaña nueva (por seguridad, para evitar phishing). Con la foto no pasa
-        // porque ahí solo se usa como src de una <img>, no como navegación de página.
-        // Por eso el CV hay que convertirlo a un Blob real antes de abrirlo.
+       
         $("#enlaceCv").on("click", function (e) {
             e.preventDefault();
             if (usuarioActual && usuarioActual.cv) {

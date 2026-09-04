@@ -8,6 +8,18 @@ function cbError(error) {
     console.error("Error en la petición:", error);
 }
 
+
+function liberarFocoAntesDeOcultar(idModal) {
+    var modalEl = document.getElementById(idModal);
+    if (!modalEl) return;
+
+    modalEl.addEventListener('hide.bs.modal', function () {
+        if (document.activeElement && modalEl.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+}
+
 function loadData() {
     var idUsuario = localStorage.getItem("idUsuario");
     var rol = localStorage.getItem("rol");
@@ -250,8 +262,6 @@ function mostrarPostulantes(idOferta, tituloOferta) {
     $("#modalPostulantesTitulo").text("Postulantes: " + tituloOferta);
     $("#listaPostulantes").html('<p class="emp-cargando">Cargando postulantes...</p>');
 
-    // getOrCreateInstance reutiliza el modal si ya está abierto, en vez de crear uno nuevo
-    // encima (que era lo que iba apilando fondos oscuros con cada clic en Aceptar/Rechazar).
     var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPostulantes'));
     modal.show();
 
@@ -362,6 +372,10 @@ $(function () {
 
     loadData();
 
+    liberarFocoAntesDeOcultar('modalEditar');
+    liberarFocoAntesDeOcultar('modalConfirmarEliminar');
+    liberarFocoAntesDeOcultar('modalPostulantes');
+
     $("#btneditar").on("click", function () {
         if (empresaActual) {
             $("#editNombre").val(empresaActual.nombre || "");
@@ -375,13 +389,10 @@ $(function () {
     });
 
     $("#btneliminar").on("click", function () {
-        // Cerramos el modal de edición antes de abrir el de confirmación,
-        // para no apilar el confirm() nativo (o dos modales) uno encima del otro.
+       
         var modalEditar = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
         if (modalEditar) modalEditar.hide();
 
-        // Pequeño delay para dejar terminar la animación de cierre de Bootstrap
-        // antes de mostrar el siguiente modal (evita que se encimen los fondos oscuros).
         setTimeout(function () {
             var modalConfirmar = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalConfirmarEliminar'));
             modalConfirmar.show();
@@ -433,15 +444,13 @@ function previewFoto(e) {
         reader.onload = ev => {
             const src = ev.target.result;
             document.getElementById('fotoPreview').src = src;
-            fotoBase64Nueva = src; // por si el usuario sigue y guarda el modal de edición
-            guardarFotoAutomatico(src); // el botón "Cambiar foto" guarda directo, sin pasar por el modal
+            fotoBase64Nueva = src; 
+            guardarFotoAutomatico(src); 
         };
         reader.readAsDataURL(file);
     }
 }
 
-// El botón "Cambiar foto" está fuera del modal de edición. En vez de reenviar
-// TODO el perfil, usamos un endpoint dedicado que solo actualiza la foto.
 function guardarFotoAutomatico(fotoBase64) {
     if (!empresaId) {
         alert("Aún no se ha cargado tu perfil empresarial");
