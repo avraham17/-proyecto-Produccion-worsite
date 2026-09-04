@@ -47,7 +47,7 @@ function callApi(url, method, data, cbSuccess, cbError) {
             try {
                 var responseText = xhr.responseText || "";
 
-                alert("STATUS: " + xhr.status + "\nERROR: " + error + "\nRESPUESTA (primeros 300 chars): " + responseText.substring(0,300) + "\n...\n(últimos 300 chars): " + responseText.substring(responseText.length-300));
+               
                 console.log("STATUS:", xhr.status);
                 console.log("ERROR:", error);
                 console.log("RESPUESTA:", responseText);
