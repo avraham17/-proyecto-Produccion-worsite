@@ -1,7 +1,7 @@
 function updateData(idUsuario, datosContrasenia) {
 
     callApi(
-            "/ResgistroUsuario/" + idUsuario + "/contrasenia",
+            API_BASE_URL + "/ResgistroUsuario/" + idUsuario + "/contrasenia",
             "PUT",
             datosContrasenia,
             actualizarContrasenia,
@@ -40,8 +40,7 @@ function updateData(idUsuario, datosContrasenia) {
                 return;
             }
 
-            // La contraseña actual ya NO se compara aquí: se manda al backend,
-            // que la valida contra el hash guardado con passwordEncoder.matches.
+            
             var datosContrasenia = {
                 "contraseniaActual": $("#passActual").val(),
                 "contraseniaNueva": $("#passNueva").val()

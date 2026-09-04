@@ -1,5 +1,4 @@
-
-var API_BASE_URL = "https://worksite.up.railway.app";
+var API_BASE_URL = "http://localhost:8080";
 
 var validMethods = ["GET", "POST", "PUT", "DELETE"];
 
@@ -46,10 +45,12 @@ function callApi(url, method, data, cbSuccess, cbError) {
         },
         error: function (xhr, status , error) {
             try {
-                alert("STATUS: " + xhr.status + "\nERROR: " + error + "\nRESPUESTA (primeros 300 chars): " + xhr.responseText.substring(0,300) + "\n...\n(últimos 300 chars): " + xhr.responseText.substring(xhr.responseText.length-300));
+                var responseText = xhr.responseText || "";
+
+                alert("STATUS: " + xhr.status + "\nERROR: " + error + "\nRESPUESTA (primeros 300 chars): " + responseText.substring(0,300) + "\n...\n(últimos 300 chars): " + responseText.substring(responseText.length-300));
                 console.log("STATUS:", xhr.status);
                 console.log("ERROR:", error);
-                console.log("RESPUESTA:", xhr.responseText);
+                console.log("RESPUESTA:", responseText);
 
                 if (xhr.status === 401) {
                     localStorage.removeItem("token");
@@ -101,7 +102,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
     const menuEmpresas = document.getElementById("menuEmpresas");
     if (menuEmpresas) {
-        // Se muestra solo si la cuenta es EMPRESA (o ADMIN, que ve de todo)
+    
         menuEmpresas.style.display = (rol === "EMPRESA" || rol === "ADMIN") ? "" : "none";
     }
 
@@ -130,4 +131,4 @@ window.addEventListener("DOMContentLoaded", function () {
     if (avatar) {
         avatar.textContent = inicialNombre + inicialApellido;
     }
-}); 
+});

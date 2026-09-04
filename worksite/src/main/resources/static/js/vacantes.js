@@ -32,7 +32,7 @@ function cargarVacantes() {
     $("#listaVacantes").html('<div class="estado-info">Cargando vacantes…</div>');
     $("#estadoInfo").hide();
 
-    callApi("/oferta", "GET", null,
+    callApi(API_BASE_URL + "/oferta", "GET", null,
         function (response) {
             var ofertas = response.data;
             var busqueda  = $("#filtroBusqueda").val().toLowerCase();

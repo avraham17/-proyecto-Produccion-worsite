@@ -77,7 +77,7 @@ function cargarEmpleosDestacados() {
     if (!contenedor) return;
 
     
-    callApi("/oferta", "GET", null, function (response) {
+    callApi(API_BASE_URL + "/oferta", "GET", null, function (response) {
         var ofertas = (response.data || [])
             .filter(function (o) { return o.estado === "activa"; })
             .slice(0, 3);
