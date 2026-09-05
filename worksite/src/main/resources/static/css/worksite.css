@@ -226,6 +226,53 @@ nav {
 }
 
 
+/* Panel de imágenes que se desliza de lado a lado sin parar, en loop infinito.
+   Funciona con puro CSS (sin JS): la pista (.carrusel-track) tiene las imágenes
+   duplicadas una vez, y la animación mueve el 50% del ancho total, que es
+   exactamente donde empieza la copia duplicada, logrando un loop sin corte. */
+.carrusel-imagenes {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  padding: 32px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+.carrusel-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: desplazar-carrusel 30s linear infinite;
+}
+
+.carrusel-track img {
+  height: 160px;
+  width: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+  background: #e5e7eb; /* se ve mientras carga o si falta la imagen */
+}
+
+.carrusel-imagenes:hover .carrusel-track {
+  animation-play-state: paused;
+}
+
+@keyframes desplazar-carrusel {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+  .carrusel-track img {
+    height: 110px;
+    width: 160px;
+  }
+}
+
+
 .section {
   max-width: 1100px;
   margin: 0 auto;

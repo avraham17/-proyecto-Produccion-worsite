@@ -23,7 +23,7 @@ public class EmpresaService {
             throw new AccessDeniedException("Debes iniciar sesión para registrar una empresa");
         }
 
-        
+
         EmpresaEntity entity = dtoToEntity(dto);
         entity.setIdUsuario(idUsuarioAutenticado);
 
