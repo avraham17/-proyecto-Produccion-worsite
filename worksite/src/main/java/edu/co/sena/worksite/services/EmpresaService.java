@@ -18,7 +18,16 @@ public class EmpresaService {
     private EmpresaRepository repository;
 
     public EmpresaEntity create(EmpresaRequestDto dto) {
-        return repository.save(dtoToEntity(dto));
+        Integer idUsuarioAutenticado = AuthUtils.getCurrentUserId();
+        if (idUsuarioAutenticado == null) {
+            throw new AccessDeniedException("Debes iniciar sesión para registrar una empresa");
+        }
+
+        
+        EmpresaEntity entity = dtoToEntity(dto);
+        entity.setIdUsuario(idUsuarioAutenticado);
+
+        return repository.save(entity);
     }
 
     public List<EmpresaListResponseDto> getAll(){
@@ -44,7 +53,7 @@ public class EmpresaService {
                 .orElseThrow(() -> new ResourceNotFoundException("No existe empresa con id: " + id));
     }
 
-    /** Verifica que el usuario autenticado sea dueño de esta empresa (o sea ADMIN). */
+
     private void validateEsPropietario(EmpresaEntity empresa){
         if (AuthUtils.tieneRol("ADMIN")) return;
 

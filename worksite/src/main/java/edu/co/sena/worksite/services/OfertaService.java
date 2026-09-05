@@ -52,17 +52,34 @@ public class OfertaService {
     private void notificarCandidatosCompatibles(OfertaEntity oferta) {
         if (oferta.getTitulo() == null || oferta.getTitulo().isBlank()) return;
 
-        String tituloOferta = oferta.getTitulo().toLowerCase();
+        String tituloOferta = normalizar(oferta.getTitulo());
 
         List<ResgistroUsuarioEntity> todosLosCandidatos = resgistroUsuarioRepository.findAll();
+
+        int totalCandidatos = todosLosCandidatos.size();
+        int candidatosConCargoYCorreo = 0;
+        int coincidencias = 0;
+
+        System.out.println(">>> [Match ofertas] Evaluando '" + oferta.getTitulo() + "' contra " + totalCandidatos + " candidatos registrados.");
 
         for (ResgistroUsuarioEntity candidato : todosLosCandidatos) {
             if (candidato.getCargo() == null || candidato.getCorreoElectronico() == null) continue;
 
-            String cargoCandidato = candidato.getCargo().trim().toLowerCase();
+            String cargoCandidato = normalizar(candidato.getCargo());
             if (cargoCandidato.isEmpty()) continue;
 
-            if (tituloOferta.contains(cargoCandidato)) {
+            candidatosConCargoYCorreo++;
+
+            boolean coincide = false;
+            for (String palabra : cargoCandidato.split("\\s+")) {
+                if (palabra.length() >= 3 && tituloOferta.contains(palabra)) {
+                    coincide = true;
+                    break;
+                }
+            }
+
+            if (coincide) {
+                coincidencias++;
                 String cuerpo = EmailTemplateBuilder.construir(
                         "Nueva oferta que podría interesarte",
                         "Hola <strong>" + candidato.getNombres() + "</strong>,",
@@ -79,6 +96,16 @@ public class OfertaService {
                 );
             }
         }
+
+        System.out.println(">>> [Match ofertas] " + candidatosConCargoYCorreo + " candidatos tenían cargo y correo válidos. "
+                + coincidencias + " coincidieron con la oferta y recibieron el correo.");
+    }
+
+
+    private String normalizar(String texto) {
+        String sinTildes = java.text.Normalizer.normalize(texto.trim().toLowerCase(), java.text.Normalizer.Form.NFD)
+                .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return sinTildes;
     }
 
     public List<OfertaListResponseDto> getAll(){

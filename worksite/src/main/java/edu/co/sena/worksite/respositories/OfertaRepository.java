@@ -18,8 +18,7 @@ public interface OfertaRepository extends
 
     long countByEstado(String estado);
 
-    // Listado resumido de ofertas para el panel de administración,
-    // incluyendo el nombre de la empresa y el conteo de postulaciones.
+
     @Query("SELECT new edu.co.sena.worksite.dtos.OfertaResumenDto(" +
             "o.id, o.titulo, o.empresa.nombre, o.estado, COUNT(p.idPostulacion)) " +
             "FROM OfertaEntity o " +

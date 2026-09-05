@@ -20,10 +20,6 @@ public interface EmpresaRepository extends
 
     Optional<EmpresaEntity> findByIdUsuario(int idUsuario);
 
-    // Listado resumido de empresas para el panel de administración,
-    // incluyendo el conteo de ofertas publicadas por cada una.
-    // EmpresaEntity no tiene una lista @OneToMany hacia OfertaEntity,
-    // así que se hace un LEFT JOIN "ad hoc" contra OfertaEntity.
     @Query("SELECT new edu.co.sena.worksite.dtos.EmpresaResumenDto(" +
             "e.id, e.nombre, e.correo, COUNT(o.id)) " +
             "FROM EmpresaEntity e " +

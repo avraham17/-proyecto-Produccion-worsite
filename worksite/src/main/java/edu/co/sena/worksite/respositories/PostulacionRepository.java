@@ -24,8 +24,7 @@ public interface PostulacionRepository extends
 
     long countByEstadoPostulacion(String estadoPostulacion);
 
-    // Listado resumido de postulaciones para el panel de administración,
-    // con el título de la oferta y el nombre completo del candidato.
+
     @Query("SELECT new edu.co.sena.worksite.dtos.PostulacionResumenDto(" +
             "p.idPostulacion, p.oferta.titulo, CONCAT(p.candidato.nombres, ' ', p.candidato.apellidos), " +
             "p.fechaPostulacion, p.estadoPostulacion) " +

@@ -21,8 +21,7 @@ public interface ResgistroUsuarioRepository extends
 
     long countByRolNombre_RolNombre(String rolNombre);
 
-    // Listado resumido de candidatos para el panel de administración.
-    // Se filtra por rol para no mezclar cuentas de tipo EMPRESA en este listado.
+
     @Query("SELECT new edu.co.sena.worksite.dtos.CandidatoResumenDto(" +
             "u.id, CONCAT(u.nombres, ' ', u.apellidos), u.correoElectronico, u.cargo) " +
             "FROM ResgistroUsuarioEntity u " +
