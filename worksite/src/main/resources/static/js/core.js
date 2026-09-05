@@ -1,4 +1,4 @@
-var API_BASE_URL = "https://worksite.up.railway.app";
+var API_BASE_URL = "https://www.worsite.online";
 
 var validMethods = ["GET", "POST", "PUT", "DELETE"];
 

@@ -16,12 +16,11 @@ import java.util.Map;
 @Service
 public class EmailService {
 
-    // Se define en application.yml, y ahí referencia la variable de entorno
-    // RESEND_API_KEY configurada en Railway. Nunca se deja escrito en el código.
-    @Value("${resend.api.key}")
+
+    @Value("${worksite.resend.api.key}")
     private String resendApiKey;
 
-    @Value("${resend.from:Worksite <onboarding@resend.dev>}")
+    @Value("${worksite.resend.from:Worksite <notificaciones@worsite.online>}")
     private String remitente;
 
     private final HttpClient httpClient = HttpClient.newBuilder()
