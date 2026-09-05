@@ -150,11 +150,14 @@ callApi (base_url, method, data, cbSuccess, cbError);
 
 function cbSuccess (data)  {
 
+  var nombreEscrito   = $("#nombre").val();
+  var apellidoEscrito = $("#Apellido").val();
+
   alert("Registro guardado correctamente");
   $("#formRegistro")[0].reset();
 
-  var nombreUsuario   = data.data.nombres   || data.data.nombre   || "";
-  var apellidoUsuario = data.data.apellidos || data.data.apellido || "";
+  var nombreUsuario   = data.data.nombres   || data.data.nombre   || nombreEscrito   || "";
+  var apellidoUsuario = data.data.apellidos || data.data.apellido || apellidoEscrito || "";
 
   localStorage.setItem("idUsuario", data.data.id);
   localStorage.setItem("correoUsuario", data.data.correoElectronico);

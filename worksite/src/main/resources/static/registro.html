@@ -18,22 +18,22 @@
         <div class="grid">
             <div>
                 <label>Nombres</label>
-                 <input type="text" id="nombre" name="nombre" required>
+                 <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Carlos" required>
             </div>
 
             <div>
                 <label>Apellidos</label>
-               <input type="text" id="Apellido" name="Apellido" required>
+               <input type="text" id="Apellido" name="Apellido" placeholder="Ej: Pérez Gómez" required>
             </div>
 
             <div>
                 <label>Correo electrónico</label>
-               <input type="email" id="correo" name="correo" autocomplete="username email" required>
+               <input type="email" id="correo" name="correo" autocomplete="username email" placeholder="Ej: correo@ejemplo.com" required>
             </div>
 
             <div>
                 <label>Teléfono</label>
-                <input type="text" id="telefono" name="telefono" required>
+                <input type="text" id="telefono" name="telefono" placeholder="Ej: 3001234567" required>
             </div>
 
             <div>
@@ -47,7 +47,7 @@
 
             <div>
                 <label>Número de documento</label>
-                <input type="text" id="Cedula" name="cedula" required>
+                <input type="text" id="Cedula" name="cedula" placeholder="Ej: 1234567890" required>
 
             </div>
 
@@ -58,7 +58,8 @@
 
             <div>
                 <label>Género</label>
-                <select type="text" id="Genero" name="Genero" required>    
+                <select id="Genero" name="Genero" required>
+                    <option value="" disabled selected>Selecciona tu género...</option>
                     <option>Masculino</option>
                     <option>Femenino</option>
                     <option>Otro</option>
@@ -67,12 +68,12 @@
 
              <div>
                 <label>Ciudad</label>
-                <input type="text" id="Ciudad" name="ciudad" required>
+                <input type="text" id="Ciudad" name="ciudad" placeholder="Ej: Cali" required>
             </div>
 
              <div>
                 <label>Cargo Profesional</label>
-                <input type="text" id="Cargo" name="cargo" autocomplete="organization-title" required>
+                <input type="text" id="Cargo" name="cargo" autocomplete="organization-title" placeholder="Ej: Desarrollador Frontend" required>
             </div>
 
             <div>
@@ -90,7 +91,7 @@
 
              <div>
                 <label>Descripción</label>
-                <textarea type="text" id="Descripcion" name="Descripcion" required></textarea>
+                <textarea id="Descripcion" name="Descripcion" placeholder="Cuéntanos brevemente sobre ti, tu experiencia y tus intereses profesionales..." required></textarea>
             </div>
 
             <div>
@@ -106,12 +107,12 @@
 
             <div>
                 <label>Contraseña</label>
-                <input type="password" id="contraseña" name="password" autocomplete="new-password" required>
+                <input type="password" id="contraseña" name="password" autocomplete="new-password" placeholder="••••••••" required>
             </div>
 
             <div>
                 <label>Confirmar contraseña</label>
-                <input type="password" id="confirmar" name="confirmar" autocomplete="new-password" required>
+                <input type="password" id="confirmar" name="confirmar" autocomplete="new-password" placeholder="••••••••" required>
             </div>
 
             <div>
